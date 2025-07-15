@@ -106,7 +106,6 @@ class Server(SSession):
     def sendUser(self, scoket, user):
         ul = self.db.getUser(user)[0]
 
-        self.send(scoket, b'\x03'
 
     def newMsg(self, data):
         sender, recver, msg = data[1:].decode().split('\x07')
