@@ -219,7 +219,7 @@ class Client(QtWidgets.QMainWindow, SSession):
         cont = cont[:-1]
 
         item = QtWidgets.QListWidgetItem()
-        item.setSizeHint(QtCore.QSize(0, (cont.count('\n') + 4) * 20))
+        item.setSizeHint(QtCore.QSize(0, (cont.count('\n') + 4) * 17))
         
         self.ui.listWidget.addItem(item)
 
