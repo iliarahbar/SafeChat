@@ -47,6 +47,43 @@ class Client(QtWidgets.QMainWindow, SSession):
         self.ui.pushButton_9.clicked.connect(lambda :self.profile(self.cur))
         self.ui.pushButton_7.clicked.connect(self.newc)
         self.di.pushButton_4.clicked.connect(self.addc)
+        self.di.pushButton.clicked.connect(self.sendSet)
+        self.ui.pushButton_5.clicked.connect(self.sett)
+
+    def sett(self):
+        self.di.stackedWidget.setCurrentIndex(0)
+
+        self.send(self.s, b'\x05' + self.user.encode())
+
+        data = self.recv(self.s)
+
+        name, bio = data[1:].decode().split('\x07')[:2]
+        
+        self.di.lineEdit.setText(self.user)
+        self.di.lineEdit_2.setText(name)
+        self.di.plainTextEdit.setPlainText(bio)
+
+        return self.di.exec()
+
+    def sendSet(self):
+
+        nuser = self.di.lineEdit.text()
+        nname = self.di.lineEdit_2.text()
+        nbio = self.di.plainTextEdit.toPlainText()
+        
+        self.send(self.s, b'\x04' + '\x07'.join([self.user, nuser, nname, nbio]).encode())
+
+        data = self.recv(self.s)
+
+        if (data[0] == 3):
+            self.di.label_5.setText("Username is Taken.")
+            return 0
+
+        self.di.close()
+
+        self.user = nuser
+
+        self.ui.pushButton_6.setText("@"+self.user)
 
     def signin(self):
         user = self.ui.lineEdit.text()
@@ -195,8 +232,6 @@ class Client(QtWidgets.QMainWindow, SSession):
 
         name, bio = data[1:].decode().split('\x07')[:2]
         
-        print(name, bio)
-
         self.di.stackedWidget.setCurrentIndex(1)
 
         self.di.label.setText('@' + user)

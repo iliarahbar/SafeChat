@@ -96,12 +96,31 @@ class Server(SSession):
                 self.newMsg(data)
 
             if data[0] == 4 and user:
-                self.updUser(user, data)
+                self.updUser(socket, data)
 
             if data[0] == 5:
                 self.sendUser(socket, data[1:].decode())
 
         self.logout(socket, user)
+
+    def updUser(self, socket, data):
+        user, nuser, nname, nbio = data[1:].decode().split('\x07')
+        if (user != nuser and len(self.db.getUser(nuser)) > 0):
+            for i in range(5):
+                self.send(socket, b'\x03')
+
+            return 0
+    
+        ul = self.db.getUser(user)[0]
+    
+        ul.username = nuser
+        ul.name = nname
+        ul.bio = nbio
+
+        self.db.ses.commit()
+        
+        for i in range(5):
+            self.send(socket, b'\x04')
 
     def sendUser(self, socket, user):
         ul = self.db.getUser(user)

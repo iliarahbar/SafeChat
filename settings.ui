@@ -38,20 +38,68 @@ font: 15pt &quot;Cantarell&quot;;</string>
    <item>
     <widget class="QStackedWidget" name="stackedWidget">
      <widget class="QWidget" name="settings">
+      <property name="styleSheet">
+       <string notr="true">padding: 10px;
+margin: 5px;</string>
+      </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <widget class="QLineEdit" name="lineEdit"/>
+        <spacer name="verticalSpacer_4">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEdit_2"/>
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>TextLabel</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEdit_3"/>
+        <widget class="QLineEdit" name="lineEdit">
+         <property name="styleSheet">
+          <string notr="true">background-color: #333333;</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_2">
+         <property name="styleSheet">
+          <string notr="true">background-color: #333333;</string>
+         </property>
+         <property name="placeholderText">
+          <string>Name</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPlainTextEdit" name="plainTextEdit">
+         <property name="styleSheet">
+          <string notr="true">background-color: #333333;</string>
+         </property>
+         <property name="placeholderText">
+          <string>Bio</string>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QRadioButton" name="radioButton">
          <property name="cursor">
           <cursorShape>PointingHandCursor</cursorShape>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: #333333;</string>
          </property>
          <property name="text">
           <string>Dark Theme</string>
@@ -66,6 +114,9 @@ font: 15pt &quot;Cantarell&quot;;</string>
          <property name="cursor">
           <cursorShape>PointingHandCursor</cursorShape>
          </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: #333333;</string>
+         </property>
          <property name="text">
           <string>Light Theme</string>
          </property>
@@ -79,8 +130,22 @@ font: 15pt &quot;Cantarell&quot;;</string>
          <property name="focusPolicy">
           <enum>Qt::TabFocus</enum>
          </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+    background-color: #333333;
+}
+
+QPushButton:hover {
+    background-color: #444444;
+}
+
+QPushButton:pressed {
+    background-color: #222222;
+}
+</string>
+         </property>
          <property name="text">
-          <string>PushButton</string>
+          <string>Change photo</string>
          </property>
         </widget>
        </item>
@@ -92,10 +157,37 @@ font: 15pt &quot;Cantarell&quot;;</string>
          <property name="focusPolicy">
           <enum>Qt::TabFocus</enum>
          </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+    background-color: #333333;
+}
+
+QPushButton:hover {
+    background-color: #444444;
+}
+
+QPushButton:pressed {
+    background-color: #222222;
+}
+</string>
+         </property>
          <property name="text">
           <string>OK</string>
          </property>
         </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>
@@ -280,6 +372,9 @@ margin: 5px;</string>
         <widget class="QLabel" name="label_4">
          <property name="text">
           <string/>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
