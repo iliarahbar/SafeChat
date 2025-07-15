@@ -99,13 +99,23 @@ class Server(SSession):
                 self.updUser(user, data)
 
             if data[0] == 5:
-                self.sendUesr(socket, user)
+                self.sendUser(socket, data[1:].decode())
 
         self.logout(socket, user)
 
-    def sendUser(self, scoket, user):
-        ul = self.db.getUser(user)[0]
+    def sendUser(self, socket, user):
+        ul = self.db.getUser(user)
 
+        print(ul)
+
+        if (len(ul) == 0):
+            for i in range(5):
+                self.send(socket, b'\x03')
+            
+            return 0
+
+        for i in range(5):
+            self.send(socket, b'\x02' + ul[0].name.encode() + b'\x07' + ul[0].bio.encode())
 
     def newMsg(self, data):
         sender, recver, msg = data[1:].decode().split('\x07')

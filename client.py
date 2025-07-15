@@ -1,6 +1,12 @@
 from session import *
 from ui import *
+from dialog_ui import Ui_Dialog
 import sys
+
+class SecondDialog(QtWidgets.QDialog, Ui_Dialog):
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
 
 class Bridge(QtCore.QObject):
     call_in_main = QtCore.pyqtSignal(object, tuple, dict)
@@ -14,6 +20,8 @@ class Client(QtWidgets.QMainWindow, SSession):
 
         self.ui = Ui_SafeChat()
         self.ui.setupUi(self)
+
+        self.di = SecondDialog()
 
         self.setCentralWidget(self.ui.stackedWidget)
         self.ui.stackedWidget.setCurrentIndex(0)
@@ -35,6 +43,10 @@ class Client(QtWidgets.QMainWindow, SSession):
         self.ui.pushButton_3.clicked.connect(lambda :self.ui.stackedWidget.setCurrentIndex(0))
         self.ui.pushButton_4.clicked.connect(self.signup)
         self.ui.pushButton_8.clicked.connect(self.sendMsg)
+        self.ui.pushButton_6.clicked.connect(lambda :self.profile(self.user))
+        self.ui.pushButton_9.clicked.connect(lambda :self.profile(self.cur))
+        self.ui.pushButton_7.clicked.connect(self.newc)
+        self.di.pushButton_4.clicked.connect(self.addc)
 
     def signin(self):
         user = self.ui.lineEdit.text()
@@ -62,6 +74,30 @@ class Client(QtWidgets.QMainWindow, SSession):
         print("SIGN IN BAD CASE")
 
         return 0
+
+    def newc(self):
+        self.di.stackedWidget.setCurrentIndex(2)
+
+        self.di.lineEdit_4.setText('')
+
+        return self.di.exec()
+
+    def addc(self):
+        user = self.di.lineEdit_4.text()
+        
+        self.send(self.s, b'\x05' + user.encode())
+
+        data = self.recv(self.s)
+
+        if (data[0] == 3):
+            self.di.label_4.setText("Username not found.")
+            return 0;
+
+        self.di.close()
+        
+        self.ul[user] = None
+        self.msg[user] = []
+        self.newContact(user)
 
     def signup(self):
         user = self.ui.lineEdit_3.text()
@@ -148,6 +184,27 @@ class Client(QtWidgets.QMainWindow, SSession):
 
         if (self.cur == ou):
             bridge.call_in_main.emit(self.showMsg, (data,), {})
+
+    def profile(self, user):
+        if (not user):
+            return 0
+
+        self.send(self.s, b'\x05' + user.encode())
+
+        data = self.recv(self.s)
+
+        name, bio = data[1:].decode().split('\x07')[:2]
+        
+        print(name, bio)
+
+        self.di.stackedWidget.setCurrentIndex(1)
+
+        self.di.label.setText('@' + user)
+        self.di.label_2.setText(name)
+        self.di.textBrowser.setText(bio)
+        self.di.label_3.setPixmap(self.geticon(user).pixmap(256, 256))
+
+        return self.di.exec()
 
     def newContact(self, username):
         item = QtWidgets.QListWidgetItem()
