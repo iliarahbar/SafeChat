@@ -112,7 +112,9 @@ class Server(SSession):
             return 0
     
         ul = self.db.getUser(user)[0]
-    
+        
+        self.sl[nuser] = self.sl[user]
+
         ul.username = nuser
         ul.name = nname
         ul.bio = nbio
